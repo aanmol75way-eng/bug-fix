@@ -2,10 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import { registerInput, registerSchema } from "./userAuthSchema";
 import { userAuthModel } from "./userAuthModel";
 import { createError } from "../common/createError";
-import bcrypt from "bcrypt";
+import * as bcrypt from "bcrypt";
 import crypto from "crypto";
 import { sendVerificationEmail } from "../config/emailConfig";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 
 const SALT_ROUNDS = 10;
 

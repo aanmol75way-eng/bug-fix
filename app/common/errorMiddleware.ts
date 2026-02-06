@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "./AppError";
+import { MulterError } from "multer";
 
 export const errorHandler = (err: Error | AppError, req: Request, res: Response, next: NextFunction): void => {
     let statusCode = 500;
@@ -7,6 +8,11 @@ export const errorHandler = (err: Error | AppError, req: Request, res: Response,
 
     if (err instanceof AppError) {
         statusCode = err.statusCode;
+        message = err.message;
+    }
+
+    if (err instanceof MulterError) {
+        statusCode = 400;
         message = err.message;
     }
 

@@ -1,22 +1,44 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 
-let applicationBugSchema = new mongoose.Schema({
+export interface ApplicationBugDocument extends Document {
+    userId: Types.ObjectId;
+    serviceId: Types.ObjectId;
+    userName: string;
+    userEmail: string;
+    bugStatus: "pending" | "in-progress" | "resolved";
+}
+
+const applicationBugSchema = new Schema<ApplicationBugDocument>({
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "UserAuth"
+        type: Schema.Types.ObjectId,
+        ref: "UserAuth",
+        required: true,
     },
     serviceId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Service"
+        type: Schema.Types.ObjectId,
+        ref: "Service",
+        required: true,
     },
-    userName: { type: String, required: true },
-    userEmail: { type: String, required: true },
+    userName: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    userEmail: {
+        type: String,
+        required: true,
+        lowercase: true,
+        trim: true,
+    },
     bugStatus: {
         type: String,
         enum: ["pending", "in-progress", "resolved"],
-        default: "pending"
+        default: "pending",
+    },
+},
+    {
+        timestamps: true,
     }
-})
+);
 
-export const applicationBugModel = mongoose.model("ApplicationBug", applicationBugSchema)
-
+export const ApplicationBugModel = mongoose.model<ApplicationBugDocument>("ApplicationBug", applicationBugSchema);

@@ -3,12 +3,13 @@ import { productModel } from "./productModel";
 import { productType } from "./productType";
 import { MulterRequest } from "../common/multerRequest";
 
+import { createError } from "../common/createError";
+
 export let createProduct = async (req: MulterRequest, res: Response, next: NextFunction) => {
   console.log({ file: req.file, body: req.body })
   try {
     if (!req.file) {
-      res.status(400).json({ status: 0, msg: "Product Image is required" });
-      return;
+      return next(createError("Product Image is required", 400));
     }
 
     let insertObj: productType = { ...req.body };
